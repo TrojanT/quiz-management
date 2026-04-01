@@ -30,6 +30,8 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 lg:grid lg:grid-cols-2">
+
+      {/* form section */}
       <div className="flex items-center justify-center px-6 py-10 sm:px-10 lg:px-14">
         <div className="w-full max-w-md">
           <div className="flex items-center gap-3">
@@ -116,6 +118,7 @@ const Login = () => {
 
       </div>
 
+      {/* background image section */}
       <div className="relative hidden overflow-hidden bg-slate-900 lg:block">
         <img
           src={loginBackGround}
