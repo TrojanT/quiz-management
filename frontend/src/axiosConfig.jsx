@@ -3,7 +3,7 @@ import { AUTH_STORAGE_KEY } from './authStorage';
 
 const axiosInstance = axios.create({
   // baseURL: 'http://localhost:5001', // local
-  baseURL: '/api', // live
+  baseURL: '/', // live
   headers: { 'Content-Type': 'application/json' },
 });
 
