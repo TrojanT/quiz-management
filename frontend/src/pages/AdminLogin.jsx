@@ -1,37 +1,38 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from '../axiosConfig';
 import logo from '../assets/logo.png';
 import loginBackGround from '../assets/back.png';
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff } from 'lucide-react';
 
-const Login = () => {
+const AdminLogin = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const { user, login } = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!user?.token || user.role !== 'user') return;
-    navigate('/user', { replace: true });
-  }, [user, navigate]);
 
   const passwordInputType = useMemo(
     () => (showPassword ? 'text' : 'password'),
     [showPassword]
   );
 
+  useEffect(() => {
+    if (user?.token && user.role === 'admin') {
+      navigate('/admin', { replace: true });
+    }
+  }, [user, navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axiosInstance.post('/api/auth/login', formData);
-      if (response.data.role !== 'user') {
+      if (response.data.role !== 'admin') {
         alert('Login failed. Please try again.');
         return;
       }
       login(response.data);
-      navigate('/user');
+      navigate('/admin');
     } catch (error) {
       alert('Login failed. Please try again.');
     }
@@ -39,8 +40,6 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 lg:grid lg:grid-cols-2">
-
-      {/* form section */}
       <div className="flex items-center justify-center px-6 py-10 sm:px-10 lg:px-14">
         <div className="w-full max-w-md">
           <div className="flex items-center gap-3">
@@ -56,11 +55,9 @@ const Login = () => {
 
           <div className="mt-10">
             <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-              Welcome back <span aria-hidden="true">👋</span>
+              Admin sign in
             </h1>
-            <p className="mt-2 text-sm text-slate-600">
-              Login to access all your data
-            </p>
+            <p className="mt-2 text-sm text-slate-600">Sign in to the admin console.</p>
           </div>
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-5">
@@ -110,24 +107,12 @@ const Login = () => {
               type="submit"
               className="w-full rounded-2xl bg-slate-800 px-4 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-900 focus:outline-none focus:ring-4 focus:ring-slate-300"
             >
-              Login
+              Sign in
             </button>
-
-            <p className="pt-1 text-center text-sm text-slate-600">
-              Don&apos;t have an account?{' '}
-              <Link
-                to="/register"
-                className="font-semibold text-slate-900 underline decoration-slate-300 underline-offset-4 hover:text-slate-700"
-              >
-                Register
-              </Link>
-            </p>
           </form>
         </div>
-
       </div>
 
-      {/* background image section */}
       <div className="relative hidden overflow-hidden bg-slate-900 lg:block">
         <img
           src={loginBackGround}
@@ -141,4 +126,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AdminLogin;
