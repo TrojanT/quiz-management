@@ -6,6 +6,7 @@ import Profile from './pages/Profile';
 import Tasks from './pages/Tasks';
 import UserDashboard from './pages/UserDashboard';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminQuizzes from './pages/AdminQuizzes';
 import UserLayout from './components/UserLayout';
 import AdminLayout from './components/AdminLayout';
 import HomeRedirect from './components/HomeRedirect';
@@ -25,8 +26,9 @@ function App() {
           <Route path="/profile" element={<Profile />} />
         </Route>
 
-        <Route element={<AdminLayout />}>
-          <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboard />} />
+          <Route path="quizzes" element={<AdminQuizzes />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
