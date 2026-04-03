@@ -1,28 +1,47 @@
-name: CI
+name: Quiz Hub CI/CD
 
 on:
-    push:
-        branches:
-            - main
-    pull_request:
-        branches:
-            - main
+  push:
+    branches:
+      - main
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
+  deploy:
+    name: Deploy on EC2
+    runs-on: self-hosted
 
-        steps:
-        - name: Checkout code
-            uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-        - name: Set up Node.js
-            uses: actions/setup-node@v2
-            with:
-                node-version: '14'
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
 
-        - name: Install dependencies
-            run: npm install
+      - name: Install root dependencies
+        run: npm install
 
-        - name: Run tests
-            run: npm test
+      - name: Install backend dependencies
+        working-directory: ./backend
+        run: npm install
+
+      - name: Install frontend dependencies
+        working-directory: ./frontend
+        run: npm install
+
+      - name: Build frontend
+        working-directory: ./frontend
+        run: npm run build
+
+      - name: Create backend .env
+        run: |
+          cd ./backend
+          touch .env
+          echo "${{ secrets.PROD }}" > .env
+
+      - name: Restart PM2 services
+        run: |
+          pm2 restart quizhub-backend || pm2 start backend/server.js --name quizhub-backend
+          pm2 restart quizhub-frontend || pm2 start "serve -s frontend/build -l 3000" --name quizhub-frontend
+          pm2 save
