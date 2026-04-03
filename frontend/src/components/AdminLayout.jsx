@@ -1,5 +1,6 @@
-import { Link, Navigate, Outlet, useNavigate } from 'react-router-dom';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import AdminSideMenu from './AdminSideMenu';
 
 const AdminLayout = () => {
   const { user, logout } = useAuth();
@@ -19,29 +20,25 @@ const AdminLayout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 px-4 py-3">
-          <nav className="flex flex-wrap items-center gap-4 text-sm font-medium text-slate-700">
-            <Link to="/admin" className="hover:text-slate-900">
-              Dashboard
-            </Link>
-          </nav>
-          <div className="flex items-center gap-3 text-sm text-slate-600">
-            <span className="truncate max-w-[10rem] sm:max-w-xs">{user.name}</span>
-            <button
-              type="button"
-              onClick={handleLogout}
-              className="shrink-0 rounded-lg bg-slate-800 px-3 py-1.5 text-xs font-semibold text-white hover:bg-slate-900"
-            >
-              Log out
-            </button>
-          </div>
-        </div>
-      </header>
-      <main className="mx-auto max-w-5xl px-4 py-6">
-        <Outlet />
-      </main>
+    <div className="flex min-h-screen bg-slate-50">
+      <AdminSideMenu />
+
+      <div className="flex min-h-screen min-w-0 flex-1 flex-col">
+        <header className="flex shrink-0 items-center justify-end gap-3 border-b border-slate-200 bg-white px-4 py-3 text-sm text-slate-600">
+          <span className="hidden truncate sm:inline max-w-[12rem]">{user.name}</span>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="shrink-0 rounded-lg bg-slate-800 px-3 py-1.5 text-xs font-semibold text-white hover:bg-slate-900"
+          >
+            Log out
+          </button>
+        </header>
+
+        <main className="flex-1 overflow-auto p-6">
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 };
