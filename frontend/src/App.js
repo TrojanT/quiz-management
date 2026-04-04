@@ -2,9 +2,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './pages/Login';
 import AdminLogin from './pages/AdminLogin';
 import Register from './pages/Register';
-import Profile from './pages/Profile';
-import Tasks from './pages/Tasks';
-import UserDashboard from './pages/UserDashboard';
+import UserHome from './pages/UserHome';
+import UserQuizzes from './pages/UserQuizzes';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminQuizzes from './pages/AdminQuizzes';
 import AdminQuestions from './pages/AdminQuestions';
@@ -22,9 +21,8 @@ function App() {
         <Route path="/" element={<HomeRedirect />} />
 
         <Route element={<UserLayout />}>
-          <Route path="/user" element={<UserDashboard />} />
-          <Route path="/tasks" element={<Tasks />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/user" element={<UserHome />} />
+          <Route path="/quizzes" element={<UserQuizzes />} />
         </Route>
 
         <Route path="/admin" element={<AdminLayout />}>
