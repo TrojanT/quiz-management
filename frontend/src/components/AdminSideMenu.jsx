@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, ListChecks } from 'lucide-react';
+import { LayoutDashboard, ListChecks, MessageSquareText } from 'lucide-react';
 import logo from '../assets/logo2.png';
 
 const navClass = ({ isActive }) =>
@@ -27,6 +27,10 @@ const AdminSideMenu = () => (
       <NavLink to="/admin/quizzes" className={navClass}>
         <ListChecks size={18} strokeWidth={1.75} aria-hidden />
         Quizzes
+      </NavLink>
+      <NavLink to="/admin/questions" className={navClass}>
+        <MessageSquareText size={18} strokeWidth={1.75} aria-hidden />
+        Questions
       </NavLink>
     </nav>
   </aside>

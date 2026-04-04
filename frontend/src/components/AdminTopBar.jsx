@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 const pageTitleFromPath = (pathname) => {
   if (pathname === '/admin' || pathname === '/admin/') return 'Dashboard';
   if (pathname.startsWith('/admin/quizzes')) return 'Quizzes';
+  if (pathname.startsWith('/admin/questions')) return 'Questions';
   return 'Admin';
 };
 
