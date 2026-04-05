@@ -26,15 +26,14 @@ const AdminLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosInstance.post('/api/auth/login', formData);
-      if (response.data.role !== 'admin') {
-        alert('Login failed. Please try again.');
-        return;
-      }
+      const response = await axiosInstance.post('/api/auth/admin/login', formData);
       login(response.data);
       navigate('/admin');
     } catch (error) {
-      alert('Login failed. Please try again.');
+      const msg =
+        error.response?.data?.message ||
+        'Sign-in failed. Please check your details and try again.';
+      alert(msg);
     }
   };
 

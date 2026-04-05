@@ -32,6 +32,11 @@ const loginUser = async (req, res) => {
         const user = await User.findOne({ email });
         if (user && (await bcrypt.compare(password, user.password))) {
             const role = user.role || 'user';
+            if (role === 'admin') {
+                return res.status(403).json({
+                    message: 'Login failed. Please try again.',
+                });
+            }
             res.json({
                 id: user.id,
                 name: user.name,
@@ -42,6 +47,31 @@ const loginUser = async (req, res) => {
         } else {
             res.status(401).json({ message: 'Invalid email or password' });
         }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+const loginAdmin = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const user = await User.findOne({ email });
+        if (!user || !(await bcrypt.compare(password, user.password))) {
+            return res.status(401).json({ message: 'Invalid email or password' });
+        }
+        const role = user.role || 'user';
+        if (role !== 'admin') {
+            return res.status(403).json({
+                message: 'Login failed. Please try again.',
+            });
+        }
+        res.json({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role,
+            token: generateToken(user.id, role),
+        });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -92,4 +122,4 @@ const updateUserProfile = async (req, res) => {
     }
 };
 
-module.exports = { registerUser, loginUser, updateUserProfile, getProfile };
+module.exports = { registerUser, loginUser, loginAdmin, updateUserProfile, getProfile };

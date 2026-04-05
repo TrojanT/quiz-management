@@ -26,14 +26,13 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axiosInstance.post('/api/auth/login', formData);
-      if (response.data.role !== 'user') {
-        alert('Login failed. Please try again.');
-        return;
-      }
       login(response.data);
       navigate('/user');
     } catch (error) {
-      alert('Login failed. Please try again.');
+      const msg =
+        error.response?.data?.message ||
+        'Login failed. Please check your details and try again.';
+      alert(msg);
     }
   };
 
