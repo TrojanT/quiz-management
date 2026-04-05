@@ -3,8 +3,11 @@ const { protect } = require('../middleware/authMiddleware');
 const quizController = require('../controllers/quizController');
 const categoryController = require('../controllers/categoryController');
 const questionController = require('../controllers/questionController');
+const adminStatsController = require('../controllers/adminStatsController');
 
 const router = express.Router();
+
+router.get('/stats', protect, adminStatsController.getDashboardStats);
 
 router.get('/questions', protect, questionController.listQuestions);
 router.post('/questions', protect, questionController.createQuestion);
