@@ -1,4 +1,4 @@
-name: Backend CI
+name: Quiz Hub CI/CD
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    name: Run Tests
+    name: Deploy Quiz Hub
     runs-on: self-hosted
 
     strategy:
@@ -16,7 +16,7 @@ jobs:
         node-version: [22] # Test on multiple Node.js versions
 
 
-    environment: MONGO_URI
+    environment: production
 
     steps:
     - name: Checkout Code
